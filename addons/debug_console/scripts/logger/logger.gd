@@ -7,7 +7,7 @@ class_name Logger
 ## CONFIG ##
 ## ------ ##
 
-const PRINT_TO_GODOT_CONSOLE = true # Console print flag
+const PRINT_TO_GODOT_CONSOLE = false # Console print flag
 const MAX_ENTRIES = 1000 # Maximum allowable entries before removal of old ones
 
 const GAME_NAME = "Untitled Game"

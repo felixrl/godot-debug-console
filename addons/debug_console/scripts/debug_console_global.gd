@@ -14,7 +14,18 @@ extends Node
 const VERSION = "0.0.1"
 
 func _ready():
-	pass
+	var command_parser = DebugConsoleCommandParser.new()
+	command_parser.register("hello", func (a): print(a))
+	
+	var pause_callable: Callable = func (args: PackedStringArray):
+		get_tree().paused = !get_tree().paused
+		print("Game paused: " + str(get_tree().paused))
+	command_parser.register("pause", pause_callable)
+	
+	command_parser.parse("hello worlde e e eee")
+	command_parser.parse(" helloo beans")
+	command_parser.parse("   ")
+	command_parser.parse("pause")
 
 func _process(delta):
 	pass
