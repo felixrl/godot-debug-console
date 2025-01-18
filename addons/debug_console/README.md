@@ -21,9 +21,9 @@ In the `Logger` class, there are two constant flags.
 The Debug Console comes with a few built-in commands.
 
 - `clear` — Clears the console.
-- `close` — Closes the console the same way that CLOSE CONSOLE button works.
-- `quit` - Same as close.
-- `pause` - Toggles the `paused` flag of the current `get_tree()` SceneTree.
+- `close` — Closes the console the same way that the CLOSE CONSOLE button works.
+- `quit` — Same as close.
+- `pause` — Toggles the `paused` flag of the current `get_tree()` SceneTree.
 
 The console uses a "command registry" dictionary. To register your own commands:
 
@@ -35,7 +35,7 @@ The console uses a "command registry" dictionary. To register your own commands:
 	DebugConsole.command_parser.register("hello", 
 		func (args: PackedStringArray): print("hi!"))
 	```
-	This registers a command called `hello` which prints `hi!` to the regular Godot console every time it is executed.
+	This registers a command called `hello` which prints `hi!` to the regular Godot console every time it is executed via the console.
 
 NOTE: The registration only persists per runtime. This means that your command(s) should be added at the loading stage of your game.
 
