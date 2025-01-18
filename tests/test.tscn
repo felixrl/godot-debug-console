@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bd3mmubyuj31"]
+[gd_scene load_steps=3 format=3 uid="uid://bd3mmubyuj31"]
 
 [ext_resource type="Script" path="res://tests/test.gd" id="1_5bm1v"]
+[ext_resource type="Script" path="res://tests/polygon.gd" id="2_2ga0y"]
 
 [node name="Test" type="Node2D"]
 script = ExtResource("1_5bm1v")
@@ -9,3 +10,4 @@ script = ExtResource("1_5bm1v")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-49, -8, -1, -64, 60, -21, 56, 16, 8, 43, -38, 31)
+script = ExtResource("2_2ga0y")

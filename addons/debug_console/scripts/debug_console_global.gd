@@ -4,9 +4,11 @@ extends Node
 ## Autoload script for DebugConsole
 
 ## TODO
+## - CONFIGURATION
 ## - Logging system
-## -- Keeping stack trace and events, etc.
+## -- Keeping stack trace?
 ## -- Choose a log path to write to?
+## -- Strip the BBCode tags from the log dump
 ## - Command system
 ## -- Interference prevention? (Is this necessary???) (Maybe just pause?)
 
@@ -17,6 +19,8 @@ const STUDIO_NAME = "Untitled Studio"
 const VERSION = "0.0.1"
 
 const CONSOLE_UI_SCENE = preload("./console/console_ui.tscn")
+
+const LOGS_DIRECTORY = "res://logs"
 
 var console_ui: ConsoleUI
 var command_parser: DebugConsoleCommandParser
@@ -47,18 +51,29 @@ func setup_console_ui() -> void:
 	## ??? Should logger be instanced?
 
 func setup_default_commands() -> void:
+	## TESTING
 	command_parser.register("hello", func (a: PackedStringArray): Logger.log("Hello world!"))
+	
+	## HELP..?
+	command_parser.register("help", func(args): Logger.log("Unfortunately, there is no help."))
+	
+	## CLEAR CONSOLE
 	command_parser.register("clear", func (args): 
 		console_ui.clear()
 		Logger.log("Console cleared.\n"))
 	
+	## TOGGLE PAUSE
 	var pause_callable: Callable = func (args: PackedStringArray):
 		get_tree().paused = !get_tree().paused
-		Logger.log("[b]GAME PAUSED[/b]: " + str(get_tree().paused))
+		Logger.log("[b]GAME PAUSED[/b]: " + str(get_tree().paused) + ". Type pause to toggle back.")
 	command_parser.register("pause", pause_callable)
 	
+	## CLOSE CONSOLE
 	command_parser.register("close", func (args): console_ui.close())
 	command_parser.register("quit", func (args): console_ui.close())
+	
+	## DUMP LOG
+	command_parser.register("dump", func (args): Logger.dump_to_file(LOGS_DIRECTORY))
 
 ## SHORTCUT CHECKS
 

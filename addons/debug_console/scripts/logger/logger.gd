@@ -80,6 +80,8 @@ static func dump_to_file(dir_path: String, filter_pred: Callable = func(x): retu
 	
 	## OPEN FILE
 	
+	Logger.log("Dumping log to " + file_path)
+	
 	var new_file = FileAccess.open(file_path, FileAccess.WRITE)
 	if not new_file:
 		## ERROR opening new file!
