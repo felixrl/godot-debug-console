@@ -22,7 +22,17 @@ script = ExtResource("1_vyqch")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 124
 
-[node name="BackgroundPanel" type="Panel" parent="CanvasLayer"]
+[node name="ConsoleUIRoot" type="Control" parent="CanvasLayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundPanel" type="Panel" parent="CanvasLayer/ConsoleUIRoot"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,22 +40,31 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yp0bh")
 
-[node name="ConsoleVerticalContainer" type="VBoxContainer" parent="CanvasLayer"]
+[node name="ConsoleMargin" type="MarginContainer" parent="CanvasLayer/ConsoleUIRoot"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="OutputMargin" type="MarginContainer" parent="CanvasLayer/ConsoleVerticalContainer"]
-layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="OutputText" type="RichTextLabel" parent="CanvasLayer/ConsoleVerticalContainer/OutputMargin"]
+[node name="ConsoleVerticalContainer" type="VBoxContainer" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin"]
+layout_mode = 2
+
+[node name="BottomBarMargin" type="MarginContainer" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="OutputText" type="RichTextLabel" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -61,17 +80,10 @@ theme_override_font_sizes/mono_font_size = 24
 bbcode_enabled = true
 scroll_following = true
 
-[node name="BottomBarMargin" type="MarginContainer" parent="CanvasLayer/ConsoleVerticalContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="BottomBarHorizontalContainer" type="HBoxContainer" parent="CanvasLayer/ConsoleVerticalContainer/BottomBarMargin"]
+[node name="BottomBarHorizontalContainer" type="HBoxContainer" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer"]
 layout_mode = 2
 
-[node name="TextInput" type="LineEdit" parent="CanvasLayer/ConsoleVerticalContainer/BottomBarMargin/BottomBarHorizontalContainer"]
+[node name="TextInput" type="LineEdit" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarHorizontalContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -79,8 +91,14 @@ theme_override_fonts/font = ExtResource("2_msv45")
 theme_override_font_sizes/font_size = 24
 placeholder_text = "> Enter a command..."
 clear_button_enabled = true
+caret_blink = true
+caret_blink_interval = 0.3
 
-[node name="EnterButton" type="Button" parent="CanvasLayer/ConsoleVerticalContainer/BottomBarMargin/BottomBarHorizontalContainer"]
+[node name="Control" type="Control" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarHorizontalContainer"]
+custom_minimum_size = Vector2(5, 2.08165e-12)
+layout_mode = 2
+
+[node name="EnterButton" type="Button" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarHorizontalContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_msv45")
@@ -88,3 +106,12 @@ theme_override_font_sizes/font_size = 24
 disabled = true
 text = "Submit"
 script = ExtResource("6_lt11v")
+
+[node name="CloseButton" type="Button" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_msv45")
+theme_override_font_sizes/font_size = 24
+text = "Close Console"

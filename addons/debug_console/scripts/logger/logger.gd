@@ -27,6 +27,8 @@ static func log(str: String) -> void:
 	if len(entries) > MAX_ENTRIES:
 		entries.remove_at(0)
 	
+	# print(get_stack()) ## IMPLEMENT STACK TRACE
+	
 	DebugConsole.console_ui.print_string(str + "\n") # TEMP SOLUTION
 	
 	## And to also show it in the Godot console...

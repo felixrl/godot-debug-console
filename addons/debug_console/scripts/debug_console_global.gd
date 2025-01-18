@@ -6,8 +6,9 @@ extends Node
 ## TODO
 ## - Logging system
 ## -- Keeping stack trace and events, etc.
+## -- Choose a log path to write to?
 ## - Command system
-## -- Open/close, interference prevention?
+## -- Interference prevention? (Is this necessary???) (Maybe just pause?)
 
 const GAME_NAME = "Untitled Game"
 const GAME_VERSION = "1.0.0"
@@ -21,6 +22,8 @@ var console_ui: ConsoleUI
 var command_parser: DebugConsoleCommandParser
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS # Always processing, debug ha.
+	
 	setup_command_parser()
 	setup_console_ui()
 	setup_default_commands()
@@ -53,3 +56,13 @@ func setup_default_commands() -> void:
 		get_tree().paused = !get_tree().paused
 		Logger.log("[b]GAME PAUSED[/b]: " + str(get_tree().paused))
 	command_parser.register("pause", pause_callable)
+	
+	command_parser.register("close", func (args): console_ui.close())
+	command_parser.register("quit", func (args): console_ui.close())
+
+## SHORTCUT CHECKS
+
+func _input(event):
+	var just_pressed = event.is_pressed() and not event.is_echo()
+	if Input.is_key_pressed(KEY_F1) and just_pressed:
+		console_ui.toggle()

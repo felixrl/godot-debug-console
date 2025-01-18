@@ -7,11 +7,16 @@ extends Control
 
 signal command_submitted(string: String)
 
+@onready var console_ui_root = %ConsoleUIRoot
+
 @onready var output_text = %OutputText
 @onready var text_input = %TextInput
 @onready var enter_button: EnterButton = %EnterButton
+@onready var close_button = %CloseButton
 
-func _ready():
+var is_open := false
+
+func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS # The console never sleeps.
 	
 	text_input.text_changed.connect(_on_text_input_changed)
@@ -19,6 +24,30 @@ func _ready():
 	
 	enter_button.disable() # Starts disabled.
 	enter_button.pressed.connect(_on_enter_button_pressed)
+	
+	close_button.pressed.connect(close)
+	
+	## START HIDDEN
+	close()
+
+## Toggles the console's visibility
+func toggle() -> void:
+	close() if is_open else open_and_focus()
+
+## Opens the console
+func open() -> void:
+	console_ui_root.show()
+	focus_mode = Control.FOCUS_ALL
+	is_open = true
+## Open + focus on typing
+func open_and_focus() -> void:
+	open()
+	text_input.grab_focus()
+## Closes the console
+func close() -> void:
+	console_ui_root.hide() # HAVE TO SHOW/HIDE ROOT INSIDE OF THE CANVAS LAYER
+	focus_mode = Control.FOCUS_NONE
+	is_open = false
 
 ## TEXT OUTPUT
 
