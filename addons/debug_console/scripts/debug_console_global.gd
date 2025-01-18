@@ -18,7 +18,7 @@ const STUDIO_NAME = "Untitled Studio"
 
 const VERSION = "0.0.1"
 
-const CONSOLE_UI_SCENE = preload("./console/console_ui.tscn")
+const CONSOLE_UI_SCENE = preload("../console_ui/console_ui.tscn")
 
 const LOGS_DIRECTORY = "res://logs"
 
