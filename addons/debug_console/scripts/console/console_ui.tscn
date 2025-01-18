@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://c2pbxjvlt7den"]
+
+[ext_resource type="Script" path="res://addons/debug_console/scripts/console/console_ui.gd" id="1_vyqch"]
+[ext_resource type="FontFile" uid="uid://c6ior61knt1fx" path="res://addons/debug_console/fonts/RobotoMono-Regular.ttf" id="2_msv45"]
+[ext_resource type="FontFile" uid="uid://l1ljjagpvplk" path="res://addons/debug_console/fonts/RobotoMono-Bold.ttf" id="3_rpiot"]
+[ext_resource type="FontFile" uid="uid://bcafaacjxols3" path="res://addons/debug_console/fonts/RobotoMono-Italic.ttf" id="4_v8iyv"]
+[ext_resource type="FontFile" uid="uid://bhv3b1vkcvqy1" path="res://addons/debug_console/fonts/RobotoMono-BoldItalic.ttf" id="5_a1ouw"]
+[ext_resource type="Script" path="res://addons/debug_console/scripts/console/components/enter_button.gd" id="6_lt11v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp0bh"]
+bg_color = Color(0, 0, 0, 0.501961)
+
+[node name="ConsoleUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vyqch")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 124
+
+[node name="BackgroundPanel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp0bh")
+
+[node name="ConsoleVerticalContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OutputMargin" type="MarginContainer" parent="CanvasLayer/ConsoleVerticalContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="OutputText" type="RichTextLabel" parent="CanvasLayer/ConsoleVerticalContainer/OutputMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("2_msv45")
+theme_override_fonts/bold_font = ExtResource("3_rpiot")
+theme_override_fonts/italics_font = ExtResource("4_v8iyv")
+theme_override_fonts/bold_italics_font = ExtResource("5_a1ouw")
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+bbcode_enabled = true
+scroll_following = true
+
+[node name="BottomBarMargin" type="MarginContainer" parent="CanvasLayer/ConsoleVerticalContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BottomBarHorizontalContainer" type="HBoxContainer" parent="CanvasLayer/ConsoleVerticalContainer/BottomBarMargin"]
+layout_mode = 2
+
+[node name="TextInput" type="LineEdit" parent="CanvasLayer/ConsoleVerticalContainer/BottomBarMargin/BottomBarHorizontalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_msv45")
+theme_override_font_sizes/font_size = 24
+placeholder_text = "> Enter a command..."
+clear_button_enabled = true
+
+[node name="EnterButton" type="Button" parent="CanvasLayer/ConsoleVerticalContainer/BottomBarMargin/BottomBarHorizontalContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_msv45")
+theme_override_font_sizes/font_size = 24
+disabled = true
+text = "Submit"
+script = ExtResource("6_lt11v")

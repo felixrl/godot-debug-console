@@ -9,7 +9,8 @@ func _ready():
 var time := 0.0
 func _process(delta):
 	time += delta
-	Logger.log("Hello world!, %s" % str(time))
+	# Logger.log("Hello world!, %s" % str(time))
 	
 	if Input.is_action_just_pressed("ui_accept"):
-		Logger.dump_to_file("res://logs", Logger.get_contains_str_pred("3"))
+		# Logger.dump_to_file("res://logs", Logger.get_contains_str_pred("3"))
+		Logger.dump_to_file("res://logs")

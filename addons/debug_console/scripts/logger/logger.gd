@@ -7,12 +7,8 @@ class_name Logger
 ## CONFIG ##
 ## ------ ##
 
-const PRINT_TO_GODOT_CONSOLE = false # Console print flag
+const PRINT_TO_GODOT_CONSOLE = true # Console print flag
 const MAX_ENTRIES = 1000 # Maximum allowable entries before removal of old ones
-
-const GAME_NAME = "Untitled Game"
-const GAME_VERSION = "1.0.0"
-const STUDIO_NAME = "Untitled Studio"
 
 static var log_file_name: String = "debug_log"
 static var log_file_extension: String = "txt"
@@ -21,6 +17,7 @@ static var log_file_extension: String = "txt"
 ## MAIN LOGIC ##
 ## ---------- ##
 
+signal entry_logged(str: String)
 static var entries: Array[String]
 
 ## Log an entry to the entries list.
@@ -29,6 +26,8 @@ static func log(str: String) -> void:
 	
 	if len(entries) > MAX_ENTRIES:
 		entries.remove_at(0)
+	
+	DebugConsole.console_ui.print_string(str + "\n") # TEMP SOLUTION
 	
 	## And to also show it in the Godot console...
 	if PRINT_TO_GODOT_CONSOLE:
@@ -39,6 +38,8 @@ static func log_warning(str: String) -> void:
 	if len(entries) > MAX_ENTRIES:
 		entries.remove_at(0)
 	
+	DebugConsole.console_ui.print_string("[color=yellow]WARNING: " + str + "[/color]\n") # TEMP SOLUTION
+	
 	if PRINT_TO_GODOT_CONSOLE:
 		push_warning(str)
 static func log_error(str: String) -> void:
@@ -46,6 +47,8 @@ static func log_error(str: String) -> void:
 	
 	if len(entries) > MAX_ENTRIES:
 		entries.remove_at(0)
+	
+	DebugConsole.console_ui.print_string("[b][color=red]ERROR: " + str + "[/color][/b]\n") # TEMP SOLUTION
 	
 	if PRINT_TO_GODOT_CONSOLE:
 		push_error(str)
@@ -81,20 +84,17 @@ static func dump_to_file(dir_path: String, filter_pred: Callable = func(x): retu
 		push_error("LOGGER: Attempt to open " + file_path + " failed.")
 		return
 	
-	new_file.store_string(GAME_NAME + " v" + GAME_VERSION + " | " + STUDIO_NAME + "\n")
-	new_file.store_string("DebugConsole v%s | Debug Log\n" % DebugConsole.VERSION)
-	new_file.store_string("Dumped at " + Time.get_datetime_string_from_system(false) + " | Maximum " + str(MAX_ENTRIES) + " lines before cutoff\n")
-	new_file.store_string("-- BEGIN LOG --\n")
-	
 	## STORE ENTRIES
 	
+	## TODO: First few lines should always be in the entries
+	## before the filter kicks in...
 	var filtered_entries = entries.filter(filter_pred)
 	for entry: String in filtered_entries:
 		new_file.store_string(entry)
 	
 	## CLOSE FILE
 	
-	new_file.store_string("-- END LOG --")
+	new_file.store_string("\n-- END LOG --")
 	new_file.close()
 
 ## Helper utility for generating predicate to filter for specific strings.
