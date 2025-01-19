@@ -1,5 +1,7 @@
 # Debug Console
 
+**v0.0.2**
+
 Introduces functionality for console input/output, logging, and custom commands for better Godot debugging and navigation during QA testing.
 
 ## Usage
@@ -19,6 +21,8 @@ DebugConsole pulls all user configuration out of the `CONFIG.tres` file located 
 Highlight over each config option to get a tooltip that describes that field's purpose/effect on the DebugConsole.
 
 ## Logging
+
+**RECOMMENDATION: If using the log dump files feature, consider adding whatever directory the logs are stored in to be in your `.gitignore`. This prevents the build-up of log files in your project's repository.**
 
 Currently, there is a static class called `Logger`
 

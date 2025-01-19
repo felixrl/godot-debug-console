@@ -5,12 +5,13 @@ extends Node
 
 
 
+const VERSION = "0.0.2" # DEBUG CONSOLE PLUGIN VERSION
+
 #region CONFIG
 
 ## Always loads the CONFIG file from the plugin folder
 ## Change this path if another CONFIG file is used
 const CONFIG: DebugConsoleConfig = preload("res://addons/debug_console/CONFIG.tres")
-const VERSION = "0.0.1" # DEBUG CONSOLE PLUGIN VERSION
 
 ## Relevant information pulled from PROJECT SETTINGS
 @onready var game_name = ProjectSettings.get_setting("application/config/name")
