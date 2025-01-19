@@ -4,3 +4,5 @@
 # Project specific ignores -- godot_debug_console
 logs/
 logs
+debug_logs/
+debug_logs

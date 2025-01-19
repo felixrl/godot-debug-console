@@ -9,4 +9,5 @@ func _ready():
 var time := 0.0
 func _process(delta):
 	time += delta
+	
 	# Logger.log("Hello world!, %s" % str(time))

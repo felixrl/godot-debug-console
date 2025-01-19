@@ -1,5 +1,28 @@
 class_name DebugConsoleCommandParser
 
+## COMMAND PARSER
+## An instance of a parser that can take string inputs
+## and call any registered commands with args
+
+
+
+func _init() -> void:
+	_register_default_commands()
+
+func _register_default_commands() -> void:
+	## COMMAND LIST
+	var command_list_callable: Callable = func (args: PackedStringArray):
+		var output = ""
+		for command in command_dictionary:
+			if output.is_empty():
+				output += command
+			else:
+				output += ", %s" % command
+		Logger.log(output)
+	register("command-list", command_list_callable)
+
+#region REGISTRY
+
 ## Keys are Strings, corresponding to valid command keywords.
 ## Values are Callables, corresponding to actual command logic.
 var command_dictionary: Dictionary = {}
@@ -14,6 +37,10 @@ func register(name: String, callable: Callable) -> void:
 ## Unregisters command with given name, if it exists.
 func unregister(name: String) -> void:
 	command_dictionary.erase(name)
+
+#endregion
+
+#region PARSING
 
 ## Parses given input string
 ## If a command is found, executes the command
@@ -31,9 +58,12 @@ func parse_and_try_execute(input_string: String) -> void:
 	var args: PackedStringArray = space_separated_strings
 	
 	## TRY CALL CORRESPONDING COMMAND
+	Logger.log("> %s" % input_string)
 	var dictionary_entry = command_dictionary.get(command, null)
 	if dictionary_entry is Callable:
-		Logger.log("Command found: " + command + ", calling with arguments " + str(args))
+		# Logger.log("Command found: " + command + ", calling with arguments " + str(args))
 		dictionary_entry.call(args)
 	else:
 		Logger.log_error("Unknown command: " + command)
+
+#endregion

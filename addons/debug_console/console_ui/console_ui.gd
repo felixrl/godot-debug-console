@@ -5,6 +5,11 @@ extends Control
 ## Added to root node of game tree at runtime
 ## The UI for controling the console
 
+## BUG: Potential interference between pause menus
+## and console if pause_on_open is on 
+
+
+
 signal command_submitted(string: String)
 
 @onready var console_ui_root = %ConsoleUIRoot
@@ -13,6 +18,8 @@ signal command_submitted(string: String)
 @onready var text_input = %TextInput
 @onready var enter_button: EnterButton = %EnterButton
 @onready var close_button = %CloseButton
+
+@onready var pause_on_open = DebugConsole.CONFIG.pause_tree_when_open
 
 var is_open := false
 
@@ -30,6 +37,8 @@ func _ready() -> void:
 	## START HIDDEN
 	close()
 
+#region OPEN/CLOSE
+
 ## Toggles the console's visibility
 func toggle() -> void:
 	close() if is_open else open_and_focus()
@@ -39,6 +48,9 @@ func open() -> void:
 	console_ui_root.show()
 	focus_mode = Control.FOCUS_ALL
 	is_open = true
+	
+	if pause_on_open:
+		get_tree().paused = true
 ## Open + focus on typing
 func open_and_focus() -> void:
 	open()
@@ -48,8 +60,13 @@ func close() -> void:
 	console_ui_root.hide() # HAVE TO SHOW/HIDE ROOT INSIDE OF THE CANVAS LAYER
 	focus_mode = Control.FOCUS_NONE
 	is_open = false
+	
+	if pause_on_open:
+		get_tree().paused = false
 
-## TEXT OUTPUT
+#endregion
+
+#region TEXT OUTPUT LOGIC
 
 ## Print, including new line character
 func print_new_line(string: String) -> void:
@@ -60,7 +77,9 @@ func print_string(string: String) -> void:
 func clear() -> void:
 	output_text.text = ""
 
-## TEXT INPUT
+#endregion
+
+#region TEXT INPUT LOGIC
 
 ## Enable the enter button if text actually contains something
 ## Otherwise, disable the enter button
@@ -88,3 +107,5 @@ func _on_text_input_submitted(_text: String) -> void:
 	_try_submit_text_input()
 func _on_enter_button_pressed() -> void:
 	_try_submit_text_input()
+
+#endregion
