@@ -48,6 +48,7 @@ func open() -> void:
 	console_ui_root.show()
 	focus_mode = Control.FOCUS_ALL
 	is_open = true
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	if pause_on_open:
 		get_tree().paused = true
@@ -60,6 +61,7 @@ func close() -> void:
 	console_ui_root.hide() # HAVE TO SHOW/HIDE ROOT INSIDE OF THE CANVAS LAYER
 	focus_mode = Control.FOCUS_NONE
 	is_open = false
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	if pause_on_open:
 		get_tree().paused = false
