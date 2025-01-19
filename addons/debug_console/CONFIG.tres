@@ -10,4 +10,5 @@ default_logs_directory_path = "res://debug_logs"
 print_to_godot_console = false
 strip_bbcode = true
 max_entries_before_cutoff = 1000
+font_size = 24
 pause_tree_when_open = false

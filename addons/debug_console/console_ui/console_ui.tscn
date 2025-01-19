@@ -48,23 +48,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="ConsoleVerticalContainer" type="VBoxContainer" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin"]
 layout_mode = 2
 
-[node name="BottomBarMargin" type="MarginContainer" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer"]
+[node name="OutputMargin" type="MarginContainer" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="OutputText" type="RichTextLabel" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarMargin"]
+[node name="OutputText" type="RichTextLabel" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/OutputMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -95,10 +95,6 @@ placeholder_text = "> Enter a command..."
 clear_button_enabled = true
 caret_blink = true
 caret_blink_interval = 0.3
-
-[node name="Control" type="Control" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarHorizontalContainer"]
-custom_minimum_size = Vector2(5, 2.08165e-12)
-layout_mode = 2
 
 [node name="EnterButton" type="Button" parent="CanvasLayer/ConsoleUIRoot/ConsoleMargin/ConsoleVerticalContainer/BottomBarHorizontalContainer"]
 unique_name_in_owner = true

@@ -19,12 +19,23 @@ signal command_submitted(string: String)
 @onready var enter_button: EnterButton = %EnterButton
 @onready var close_button = %CloseButton
 
+@onready var font_size = DebugConsole.CONFIG.font_size
 @onready var pause_on_open = DebugConsole.CONFIG.pause_tree_when_open
 
 var is_open := false
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS # The console never sleeps.
+	
+	## SETUP FONT SIZE
+	output_text.add_theme_font_size_override("normal_font_size", font_size)
+	output_text.add_theme_font_size_override("bold_font_size", font_size)
+	output_text.add_theme_font_size_override("bold_italics_font_size", font_size)
+	output_text.add_theme_font_size_override("italics_font_size", font_size)
+	output_text.add_theme_font_size_override("mono_font_size", font_size)
+	text_input.add_theme_font_size_override("font_size", font_size)
+	enter_button.add_theme_font_size_override("font_size", font_size)
+	close_button.add_theme_font_size_override("font_size", font_size)
 	
 	text_input.text_changed.connect(_on_text_input_changed)
 	text_input.text_submitted.connect(_on_text_input_submitted)

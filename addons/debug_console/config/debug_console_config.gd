@@ -28,6 +28,10 @@ var max_entries_before_cutoff : int = 1000
 
 @export_category("Console")
 
+## What font size is the text in the console displayed as?
+@export_range(1, 256)
+var font_size : int = 24
+
 ## Whether or not the main game tree should be paused when the console is open
 ## (Possibly helps prevent input interference from keys?)
 @export var pause_tree_when_open : bool = false
