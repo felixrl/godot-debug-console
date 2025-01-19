@@ -7,6 +7,14 @@ extends Node
 
 const VERSION = "0.0.2" # DEBUG CONSOLE PLUGIN VERSION
 
+#region PUBLIC INTERFACE
+
+## Easy-access public "forwarders" for the registry
+func register(name: String, callable: Callable) -> void:
+	command_parser.register(name, callable)
+func unregister(name: String) -> void:
+	command_parser.unregister(name)
+
 #region CONFIG
 
 ## Always loads the CONFIG file from the plugin folder

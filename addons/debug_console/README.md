@@ -63,21 +63,21 @@ The Debug Console comes with a few built-in commands.
 
 	Dumps the current log, with no filter, to a file at the destination directory with the name `<log_file_name_prefix>_<iteration>.txt`. If no `<destination-dir>` is provided, the default directory is used.
 
-The console's backend uses a command registry. To register your own commands:
+The console's backend uses a command registry. To register your own commands from your codebase:
 
 1. Create a closure of `Callable` type (a function, anonymous function, lambda) which takes one parameter of type `PackedStringArray`. These are your command's arguments.
 2. Define your command's logic and behaviour within the Calleable's body.
-3. Call `DebugConsole.command_parser.register()` with your new command's name (e.g. the identifying keyword) and your Callable to register it. For example: 
+3. Call `DebugConsole.register()` with your new command's name (e.g. the identifying keyword) and your Callable to register it. For example: 
 
 	```
-	DebugConsole.command_parser.register("hello", 
+	DebugConsole.register("hello1", 
 		func (args: PackedStringArray): print("hi!"))
 	```
-	This registers a command called `hello` which prints `hi!` to the regular Godot console every time it is executed via the console.
+	This registers a command called `hello1` which prints `hi!` to the regular Godot console every time it is executed via the console.
 
 **NOTE: The registration only persists per runtime. This means that your command(s) should be added at the loading stage of your game.**
 
-To remove a command from the registry, use `DebugConsole.command_parser.unregister()` with your command's name. e.g. `unregister("hello")`.
+To remove a command from the registry, use `DebugConsole.unregister()` with your command's name. e.g. `unregister("hello1")`.
 
 # TODO
 
@@ -85,5 +85,4 @@ Here is a list of features that are planned:
 - Stack trace in the Logger
 - Separate Logger instances?
 - `help` command for the Console. Prints brief summaries for all commands by using another `summary` registry. Prints longer description when called with a command keyword, using `description` registry.
-- `CommandRegistry` should be accessible by a global singleton for easier use.
 - Separate console log and event log for easier filtering/selection.

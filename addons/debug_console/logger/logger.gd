@@ -32,7 +32,7 @@ static func log(str: String) -> void:
 	
 	# print(get_stack()) ## IMPLEMENT STACK TRACE
 	
-	DebugConsole.console_ui.print_string(str + "\n") # TEMP SOLUTION
+	DebugConsole.console_ui.print_string.call_deferred(str + "\n") # TEMP SOLUTION
 	
 	## And to also show it in the Godot console...
 	if print_to_godot_console:
@@ -43,7 +43,7 @@ static func log_warning(str: String) -> void:
 	if len(entries) > max_entries:
 		entries.remove_at(0)
 	
-	DebugConsole.console_ui.print_string("[color=yellow]WARNING: " + str + "[/color]\n") # TEMP SOLUTION
+	DebugConsole.console_ui.print_string.call_deferred("[color=yellow]WARNING: " + str + "[/color]\n") # TEMP SOLUTION
 	
 	if print_to_godot_console:
 		push_warning(str)
@@ -53,7 +53,7 @@ static func log_error(str: String) -> void:
 	if len(entries) > max_entries:
 		entries.remove_at(0)
 	
-	DebugConsole.console_ui.print_string("[b][color=red]ERROR: " + str + "[/color][/b]\n") # TEMP SOLUTION
+	DebugConsole.console_ui.print_string.call_deferred("[b][color=red]ERROR: " + str + "[/color][/b]\n") # TEMP SOLUTION
 	
 	if print_to_godot_console:
 		push_error(str)
