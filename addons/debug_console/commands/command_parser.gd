@@ -10,6 +10,34 @@ func _init() -> void:
 	_register_default_commands()
 
 func _register_default_commands() -> void:
+	## HELP
+	var help_cmd: Callable = func (args: PackedStringArray):
+		if len(args) < 1:
+			## REGULAR HELP
+			var output = "Type [b]help [cmd_name][/b] for a more detailed entry\n"
+			for command in command_dictionary:
+				var line = ""
+				if command_dictionary[command].get_short_help_desc().is_empty():
+					line = "[b]%s[/b]" % command + ": <no blurb provided>"
+				else:
+					line = "[b]%s[/b]" % command + ": " + command_dictionary[command].get_short_help_desc()
+				if output.is_empty():
+					output += line
+				else:
+					output += "\n%s" % line
+			Logger.log(output)
+		else:
+			if args[0] in command_dictionary:
+				if command_dictionary[args[0]].get_long_help_desc().is_empty():
+					Logger.log("[b]%s[/b]" % args[0] + " has no detailed help entry.")
+				else:
+					Logger.log("[b]%s[/b]" % args[0] + "\n" + command_dictionary[args[0]].get_long_help_desc())
+			else:
+				Logger.log_error("help not found for %s: not a registered command" % args[0])
+	register("help", help_cmd, "Lists help for all registered commands", """Usage: help [cmd_name]
+	If no cmd_name is specified, prints a list of commands and their short descriptions.
+	If cmd_name, prints the detailed help entry for cmd_name.""")
+
 	## COMMAND LIST
 	var cmdlist_cmd: Callable = func (args: PackedStringArray):
 		var output = ""
@@ -19,27 +47,8 @@ func _register_default_commands() -> void:
 			else:
 				output += ", %s" % command
 		Logger.log(output)
-	register("cmdlist", cmdlist_cmd)
-	
-	## HELP
-	var help_cmd: Callable = func (args: PackedStringArray):
-		if len(args) < 1:
-			## REGULAR HELP
-			var output = ""
-			for command in command_dictionary:
-				var line = ""
-				line = command + ": " + command_dictionary[command].get_short_help_desc()
-				if output.is_empty():
-					output += line
-				else:
-					output += "\n%s" % line
-			Logger.log(output)
-		else:
-			if args[0] in command_dictionary:
-				Logger.log(args[0] + "\n" + command_dictionary[args[0]].get_long_help_desc())
-			else:
-				Logger.log_error("help not found for %s: not a registered command" % args[0])
-	register("help", help_cmd, "Lists help for all registered commands.", "...")
+	register("cmdlist", cmdlist_cmd, "Lists all currently registered commands", """Usage: cmdlist
+	Lists all currently registered commmands in a comma-separated list.""")
 
 #region REGISTRY
 
@@ -47,6 +56,10 @@ func _register_default_commands() -> void:
 ## Values are DebugConsoleCommand objects,
 ## which encapsulate the Callable (actual logic) and short and long help blurbs.
 var command_dictionary: Dictionary = {}
+
+## SHORT BLURBS should be one sentence with no punctuation
+## LONG DESCRIPTION should start with a USAGE: <command format> line
+## then continue with indented lines in regular English punctuation describing behaviour.
 
 ## Registers a command with name, pointing to the corresponding callable.
 ## If command already exists, REPLACES existing entry.
