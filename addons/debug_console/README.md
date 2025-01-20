@@ -82,6 +82,7 @@ To remove a command from the registry, use `DebugConsole.unregister()` with your
 # TODO
 
 Here is a list of features that are planned:
+- Make a "Command" object for registry. Methods to register command object or register with parameters of method.
 - Stack trace in the Logger
 - Separate Logger instances?
 - `help` command for the Console. Prints brief summaries for all commands by using another `summary` registry. Prints longer description when called with a command keyword, using `description` registry.

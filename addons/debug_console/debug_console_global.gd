@@ -79,9 +79,6 @@ func register_default_commands() -> void:
 	
 	command_parser.register("hello", hello_callable)
 	
-	## HELP..?
-	command_parser.register("help", func(args): Logger.log("Unfortunately, there is no help."))
-	
 	## CLEAR CONSOLE
 	var clear_callable: Callable = func (args: PackedStringArray):
 		console_ui.clear()
