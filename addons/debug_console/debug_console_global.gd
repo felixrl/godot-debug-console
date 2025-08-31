@@ -1,11 +1,12 @@
+class_name DebugConsoleGlobal
 extends Node
 
+## ---
 ## DEBUG CONSOLE GLOBAL
 ## Autoload script for DebugConsole
+## ---
 
-
-
-const VERSION = "0.0.2" # DEBUG CONSOLE PLUGIN VERSION
+const VERSION = "0.0.3" # DEBUG CONSOLE PLUGIN VERSION
 
 #region PUBLIC INTERFACE
 

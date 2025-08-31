@@ -1,16 +1,16 @@
 class_name ConsoleUI
 extends Control
 
+signal command_submitted(string: String)
+
+## ---
 ## CONSOLE UI
 ## Added to root node of game tree at runtime
 ## The UI for controling the console
+## ---
 
-## BUG: Potential interference between pause menus
+## BUG: Potential interference with game pausing/pause menus
 ## and console if pause_on_open is on 
-
-
-
-signal command_submitted(string: String)
 
 @onready var console_ui_root = %ConsoleUIRoot
 
@@ -27,6 +27,21 @@ var is_open := false
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS # The console never sleeps.
 	
+	_init_style()
+	
+	text_input.text_changed.connect(_on_text_input_changed)
+	text_input.text_submitted.connect(_on_text_input_submitted)
+	text_input.keep_editing_on_text_submit = true ## Ensures that pressing enter keeps the input in the line edit
+	
+	enter_button.disable() # Starts disabled.
+	enter_button.pressed.connect(_on_enter_button_pressed)
+	
+	close_button.pressed.connect(close)
+	
+	## START HIDDEN
+	close()
+ 
+func _init_style() -> void:
 	## SETUP FONT SIZE
 	output_text.add_theme_font_size_override("normal_font_size", font_size)
 	output_text.add_theme_font_size_override("bold_font_size", font_size)
@@ -36,17 +51,14 @@ func _ready() -> void:
 	text_input.add_theme_font_size_override("font_size", font_size)
 	enter_button.add_theme_font_size_override("font_size", font_size)
 	close_button.add_theme_font_size_override("font_size", font_size)
-	
-	text_input.text_changed.connect(_on_text_input_changed)
-	text_input.text_submitted.connect(_on_text_input_submitted)
-	
-	enter_button.disable() # Starts disabled.
-	enter_button.pressed.connect(_on_enter_button_pressed)
-	
-	close_button.pressed.connect(close)
-	
-	## START HIDDEN
-	close()
+
+func _input(event: InputEvent) -> void:
+	if text_input.has_focus():
+		if event is InputEventKey and event.is_pressed() and not event.is_echo():
+			if event.physical_keycode == KEY_UP:
+				text_input.text = navigate_back()
+			elif event.physical_keycode == KEY_DOWN:
+				text_input.text = navigate_forward()
 
 #region OPEN/CLOSE
 
@@ -111,14 +123,41 @@ func _try_submit_text_input() -> void:
 		return
 	
 	command_submitted.emit(string)
+	add_command_to_history(string)
+	
 	text_input.text = ""
 	enter_button.disable()
-	text_input.grab_focus()
+	text_input.call_deferred("grab_focus")
 
 ## UI ways to submit the text input
 func _on_text_input_submitted(_text: String) -> void:
 	_try_submit_text_input()
 func _on_enter_button_pressed() -> void:
 	_try_submit_text_input()
+
+#endregion
+
+#region COMMAND HISTORY
+
+var history: Array[String] = []
+var navigation_head: int = 0
+
+func add_command_to_history(line: String) -> void:
+	history.append(line)
+	navigation_head = history.size()
+
+func navigate_back() -> String:
+	navigation_head -= 1
+	if navigation_head < 0:
+		navigation_head = -1
+		return ""
+	return history[navigation_head]
+
+func navigate_forward() -> String:
+	navigation_head += 1
+	if navigation_head >= history.size():
+		navigation_head = history.size()
+		return ""
+	return history[navigation_head]
 
 #endregion

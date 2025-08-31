@@ -1,11 +1,12 @@
 class_name DebugConsoleCommandParser
 
+## ---
 ## COMMAND PARSER
 ## An instance of a parser that can take string inputs
 ## and call any registered commands with args
+## ---
 
-
-
+## Creates a command parser with default commands registered
 func _init() -> void:
 	_register_default_commands()
 
@@ -55,11 +56,7 @@ func _register_default_commands() -> void:
 ## Keys are Strings, corresponding to valid command keywords.
 ## Values are DebugConsoleCommand objects,
 ## which encapsulate the Callable (actual logic) and short and long help blurbs.
-var command_dictionary: Dictionary = {}
-
-## SHORT BLURBS should be one sentence with no punctuation
-## LONG DESCRIPTION should start with a USAGE: <command format> line
-## then continue with indented lines in regular English punctuation describing behaviour.
+var command_dictionary: Dictionary[String, DebugConsoleCommand] = {}
 
 ## Registers a command with name, pointing to the corresponding callable.
 ## If command already exists, REPLACES existing entry.

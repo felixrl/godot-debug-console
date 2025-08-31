@@ -1,10 +1,10 @@
 class_name Logger
 
+## ---
 ## LOGGER
 ## A basic static interface for general logging
 ## Logged outputs go to console(s)
-
-
+## ---
 
 #region CONFIG
 
