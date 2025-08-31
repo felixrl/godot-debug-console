@@ -40,7 +40,7 @@ func _ready() -> void:
 	
 	## START HIDDEN
 	close()
- 
+
 func _init_style() -> void:
 	## SETUP FONT SIZE
 	output_text.add_theme_font_size_override("normal_font_size", font_size)

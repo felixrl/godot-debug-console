@@ -50,6 +50,40 @@ func _register_default_commands() -> void:
 		Logger.log(output)
 	register("cmdlist", cmdlist_cmd, "Lists all currently registered commands", """Usage: cmdlist
 	Lists all currently registered commmands in a comma-separated list.""")
+	
+	## RUN
+	var run: Callable = func (args: PackedStringArray):
+		if len(args) != 1:
+			Logger.log("Usage: run [path_to_txt_file_from_game_directory]")
+			return
+		
+		var path: String = "res://".path_join(args[0])
+		var file = FileAccess.open(path, FileAccess.READ)
+		
+		if file == null:
+			var error := FileAccess.get_open_error()
+			match error:
+				ERR_FILE_NOT_FOUND:
+					Logger.log_error("File not found! Are you sure your path is correct and is local to the root project directory?")
+				ERR_FILE_BAD_PATH:
+					Logger.log_error("Bad path!")
+				ERR_FILE_CANT_READ:
+					Logger.log_error("Can't read file!")
+				ERR_FILE_CANT_OPEN:
+					Logger.log_error("Can't open file!")
+			return
+		
+		while not file.eof_reached():
+			var next_line = file.get_line().strip_edges()
+			if next_line.begins_with("#"):
+				continue ## Ignore comments
+			if next_line == "":
+				continue ## Ignore empty lines
+			parse_and_try_execute(next_line)
+	register("run", run, "Runs all commands from the given text file, path relative to project root", """Usage: run [path_to_txt_file_from_game_directory]
+	Runs all commands from the given text file, path relative to project root.
+	Ignores comments indicated by lines starting with #.
+	Ignores empty lines.""")
 
 #region REGISTRY
 

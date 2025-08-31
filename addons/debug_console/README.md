@@ -1,6 +1,6 @@
 # Debug Console
 
-**v0.0.2**
+**v0.0.3**
 
 Introduces functionality for console input/output, logging, and custom commands for better Godot debugging and navigation during QA testing.
 
@@ -44,6 +44,9 @@ The Debug Console comes with a few built-in commands.
 - `cmdlist`
 
 	Prints a list of all currently registered commands to the console.
+- `run [txt-file-path-relative-to-project-root]`
+
+	Runs every line of a text file as a command, ignoring # comments and empty lines.
 - `clear`
 
 	Clears the console.
@@ -101,9 +104,9 @@ Instead of calling `register` with all four arguments (name, callable, short blu
 
 To register the object, simply call `DebugConsole.register_cmd(name, command_object)` with your command's name keyword and DebugConsoleCommand instance.
 
-# TODO
+# // TODO
 
 Here is a list of features that are planned:
 - Stack trace in the Logger
-- Multiple Logger instances
+- Multiple Logger instances (logger registry)
 - Separate console log and event log for easier filtering/selection.
