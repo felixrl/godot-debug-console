@@ -59,6 +59,9 @@ func _input(event: InputEvent) -> void:
 				text_input.text = navigate_back()
 			elif event.physical_keycode == KEY_DOWN:
 				text_input.text = navigate_forward()
+			#elif event.physical_keycode == KEY_TAB:
+				### Attempt autocomplete for the current argument based on logic from root directory path
+				#attempt_autocomplete_path()
 
 #region OPEN/CLOSE
 
@@ -159,5 +162,11 @@ func navigate_forward() -> String:
 		navigation_head = history.size()
 		return ""
 	return history[navigation_head]
+
+#endregion
+
+#region AUTOCOMPLETE
+
+## TODO: Implement autocomplete.
 
 #endregion

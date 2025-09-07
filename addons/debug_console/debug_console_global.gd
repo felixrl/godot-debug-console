@@ -53,12 +53,12 @@ func _ready():
 	setup_console_ui()
 	register_default_commands()
 	
-	Logger.log.call_deferred(game_name + " v" + game_version + " by " + studio_name)
-	Logger.log.call_deferred("DebugConsole v%s by felixrl" % VERSION)
-	Logger.log.call_deferred("Debugging started at %s\n" % Time.get_datetime_string_from_system(false))
+	Loggers.log.call_deferred(game_name + " v" + game_version + " by " + studio_name)
+	Loggers.log.call_deferred("DebugConsole v%s by felixrl" % VERSION)
+	Loggers.log.call_deferred("Debugging started at %s\n" % Time.get_datetime_string_from_system(false))
 	# Logger.log.call_deferred("Dumped at " + Time.get_datetime_string_from_system(false) + " | Maximum " + str(Logger.MAX_ENTRIES) + " lines before cutoff")
 	# Logger.log.call_deferred("-- BEGIN LOG --\n")
-	Logger.log.call_deferred("For a list of commands, type [b]cmdlist[/b] or [b]help[/b].")
+	Loggers.log.call_deferred("For a list of commands, type [b]cmdlist[/b] or [b]help[/b].")
 
 func setup_command_parser() -> void:
 	command_parser = DebugConsoleCommandParser.new()
@@ -77,7 +77,7 @@ func register_default_commands() -> void:
 	## CLEAR CONSOLE
 	var clear_cmd: Callable = func (args: PackedStringArray):
 		console_ui.clear()
-		Logger.log("Console cleared.\n")
+		Loggers.log("Console cleared.\n")
 	command_parser.register("clear", clear_cmd, "Clears the console", """Usage: clear
 	Clears the console and prints \"Console cleared.\"""")
 	
@@ -86,19 +86,19 @@ func register_default_commands() -> void:
 		if len(args) < 1:
 			get_tree().paused = not get_tree().paused
 			if get_tree().paused:
-				Logger.log("[b]Game paused.[/b] Type pause to unpause.")
+				Loggers.log("[b]Game paused.[/b] Type pause to unpause.")
 			else:
-				Logger.log("[b]Game unpaused.[/b] Type pause to pause.")
+				Loggers.log("[b]Game unpaused.[/b] Type pause to pause.")
 		elif (not args[0] == "true" and not args[0] == "false"):
 			## Invalid argument
-			Logger.log_error("Invalid argument: pause expects either true or false.")
+			Loggers.log_error("Invalid argument: pause expects either true or false.")
 		else:
 			if args[0] == "true":
 				get_tree().paused = true
-				Logger.log("[b]Game paused.[/b] Type pause to unpause.")
+				Loggers.log("[b]Game paused.[/b] Type pause to unpause.")
 			elif args[0] == "false":
 				get_tree().paused = false
-				Logger.log("[b]Game unpaused.[/b] Type pause to pause.")
+				Loggers.log("[b]Game unpaused.[/b] Type pause to pause.")
 	command_parser.register("pause", pause_cmd, "Controls pause state of the tree", """Usage: pause [true/false]
 	If no argument, toggles paused state of the SceneTree.
 	If given true or false, sets paused state of the SceneTree to given value.""")
@@ -113,10 +113,14 @@ func register_default_commands() -> void:
 	## DUMP LOG
 	var dump_cmd: Callable = func (args: PackedStringArray):
 		if len(args) < 1 or args[0].is_empty():
-			Logger.dump_to_file(CONFIG.default_logs_directory_path)
+			Loggers.dump(CONFIG.default_logs_directory_path, [])
 		else:
-			Logger.dump_to_file(args[0])
-	command_parser.register("dump", dump_cmd, "Dumps the console log to a file", """Usage: dump [destination_directory]
+			## TODO: Make an alternate command to change dir?
+			var ids: Array[int] = []
+			for i in range(args.size()):
+				ids.append(int(args[i]))
+			Loggers.dump(CONFIG.default_logs_directory_path, ids)
+	command_parser.register("dump", dump_cmd, "Dumps the console log to a file", """Usage: dump <logger_id_0> <logger_id_1> ...
 	If no destination is provided, dumps a log file with all console entries to the CONFIG's default logs folder.
 	If a destination is provided, attempts to dump a log file to the given folder path.""")
 
@@ -132,7 +136,8 @@ func _input(event):
 	if Input.is_key_pressed(CONSOLE_TOGGLE_KEY) and just_pressed:
 		console_ui.toggle()
 	if Input.is_key_pressed(DUMP_LOG_KEY) and just_pressed:
-		Logger.log("F3 shortcut pressed")
-		Logger.dump_to_file(CONFIG.default_logs_directory_path)
+		Loggers.log("F3 shortcut pressed")
+		## TODO: Make sure to dump here!
+		#Logger.dump_to_file(CONFIG.default_logs_directory_path)
 
 #endregion

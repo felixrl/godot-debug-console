@@ -26,15 +26,15 @@ func _register_default_commands() -> void:
 					output += line
 				else:
 					output += "\n%s" % line
-			Logger.log(output)
+			Loggers.log(output)
 		else:
 			if args[0] in command_dictionary:
 				if command_dictionary[args[0]].get_long_help_desc().is_empty():
-					Logger.log("[b]%s[/b]" % args[0] + " has no detailed help entry.")
+					Loggers.log("[b]%s[/b]" % args[0] + " has no detailed help entry.")
 				else:
-					Logger.log("[b]%s[/b]" % args[0] + "\n" + command_dictionary[args[0]].get_long_help_desc())
+					Loggers.log("[b]%s[/b]" % args[0] + "\n" + command_dictionary[args[0]].get_long_help_desc())
 			else:
-				Logger.log_error("help not found for %s: not a registered command" % args[0])
+				Loggers.log_error("help not found for %s: not a registered command" % args[0])
 	register("help", help_cmd, "Lists help for all registered commands", """Usage: help [cmd_name]
 	If no cmd_name is specified, prints a list of commands and their short descriptions.
 	If cmd_name, prints the detailed help entry for cmd_name.""")
@@ -47,14 +47,14 @@ func _register_default_commands() -> void:
 				output += command
 			else:
 				output += ", %s" % command
-		Logger.log(output)
+		Loggers.log(output)
 	register("cmdlist", cmdlist_cmd, "Lists all currently registered commands", """Usage: cmdlist
 	Lists all currently registered commmands in a comma-separated list.""")
 	
 	## RUN
 	var run: Callable = func (args: PackedStringArray):
 		if len(args) != 1:
-			Logger.log("Usage: run [path_to_txt_file_from_game_directory]")
+			Loggers.log("Usage: run [path_to_txt_file_from_game_directory]")
 			return
 		
 		var path: String = "res://".path_join(args[0])
@@ -64,13 +64,13 @@ func _register_default_commands() -> void:
 			var error := FileAccess.get_open_error()
 			match error:
 				ERR_FILE_NOT_FOUND:
-					Logger.log_error("File not found! Are you sure your path is correct and is local to the root project directory?")
+					Loggers.log_error("File not found! Are you sure your path is correct and is local to the root project directory?")
 				ERR_FILE_BAD_PATH:
-					Logger.log_error("Bad path!")
+					Loggers.log_error("Bad path!")
 				ERR_FILE_CANT_READ:
-					Logger.log_error("Can't read file!")
+					Loggers.log_error("Can't read file!")
 				ERR_FILE_CANT_OPEN:
-					Logger.log_error("Can't open file!")
+					Loggers.log_error("Can't open file!")
 			return
 		
 		while not file.eof_reached():
@@ -119,7 +119,7 @@ func parse_and_try_execute(input_string: String) -> void:
 	## SPLIT INPUT STRING INTO SEGMENTS
 	var space_separated_strings: PackedStringArray = input_string.strip_edges().split(" ", false)
 	if len(space_separated_strings) == 0:
-		Logger.log_error("Attempted to parse command, but found no command or arguments.")
+		Loggers.log_error("Attempted to parse command, but found no command or arguments.")
 		return
 	
 	## ISOLATE COMMAND AND ARGUMENTS
@@ -128,12 +128,12 @@ func parse_and_try_execute(input_string: String) -> void:
 	var args: PackedStringArray = space_separated_strings
 	
 	## TRY CALL CORRESPONDING COMMAND
-	Logger.log("> %s" % input_string)
+	Loggers.log("> %s" % input_string)
 	var dictionary_entry = command_dictionary.get(command, null)
 	if dictionary_entry is DebugConsoleCommand:
 		# Logger.log("Command found: " + command + ", calling with arguments " + str(args))
 		dictionary_entry.callable.call(args)
 	else:
-		Logger.log_error("Unknown command: " + command)
+		Loggers.log_error("Unknown command: " + command)
 
 #endregion
